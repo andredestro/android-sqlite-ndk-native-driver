@@ -50,7 +50,12 @@ sqlc_native_response_ct* sqlc_db_open(const char *filename, int flags)
 
   MYLOG("db_open %s result %d ptr %p", filename, r1, d1);
 
-  if (r1 != 0) return -r1;
+  if (r1 != 0) {
+      resp = malloc (sizeof (sqlc_native_response_ct));
+      resp->result = -r1;
+      resp->handle = 0;
+      return resp;
+  }
 
   sqlite3_db_config(d1, SQLITE_DBCONFIG_DEFENSIVE, 1, NULL);
 
